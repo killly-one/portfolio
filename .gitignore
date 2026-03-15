@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Environment variables (重要：包含 API Key，不能上传)
+.env
+.env.local
+.env.*.local
+
+# Editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Cache
+.cache/
+
+# 视频文件（太大不上传）
+Viedo/
+*.mp4
+*.mov
+*.m4v
+*.avi
+*.mkv

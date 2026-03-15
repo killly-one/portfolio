@@ -1,0 +1,829 @@
+/* 基准缩放：以2560px为基准，使用vw单位实现等比例缩放 */
+.glass-navbar {
+  position: fixed;
+  top: clamp(12px, 0.9375vw, 24px);
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  padding: 0 clamp(12px, 0.9375vw, 24px);
+  display: flex;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.glass-navbar.collapsed {
+  top: 24px;
+}
+
+/* 以2560px为基准计算：800/2560=31.25vw, 320/2560=12.5vw */
+.navbar-shell {
+  width: 31.25vw;
+  max-width: 31.25vw;
+  min-width: 31.25vw;
+  display: flex;
+  justify-content: center;
+}
+
+/* 78/2560=3.047vw */
+.navbar-container {
+  width: 100%;
+  height: 3.047vw;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(6px, 0.469vw, 12px);
+  position: relative;
+  transition: gap 0.8s cubic-bezier(0.25, 0.8, 0.35, 1);
+}
+
+/* 收缩状态 - gap 缩小 */
+.navbar-container.collapsed {
+  gap: clamp(4px, 0.3125vw, 8px);
+}
+
+.nav-segment {
+  height: 3.047vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 clamp(9px, 0.703vw, 18px) clamp(20px, 1.5625vw, 40px) rgba(0, 0, 0, 0.22);
+  background-clip: padding-box;
+  position: relative;
+  isolation: isolate;
+  border-radius: clamp(1.5px, 0.117vw, 3px);
+  transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.35, 1),
+              opacity 0.8s cubic-bezier(0.25, 0.8, 0.35, 1),
+              max-width 0.8s cubic-bezier(0.25, 0.8, 0.35, 1),
+              padding 0.8s cubic-bezier(0.25, 0.8, 0.35, 1);
+}
+
+.nav-segment > * {
+  position: relative;
+  z-index: 3;
+}
+
+.segment-left {
+  padding: 0 clamp(15px, 1.172vw, 30px);
+  border-radius: clamp(1.5px, 0.117vw, 3px);
+  white-space: nowrap;
+  flex-shrink: 0;
+  width: auto;
+}
+
+.segment-right {
+  padding: 0 clamp(7.5px, 0.586vw, 15px);
+  border-radius: clamp(1.5px, 0.117vw, 3px);
+  white-space: nowrap;
+  flex-shrink: 0;
+  width: auto;
+  min-width: clamp(30px, 2.344vw, 60px);
+  min-height: 3.047vw;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  /* 移除 transform transition，让 Framer Motion 控制 */
+  transition: opacity 0.8s cubic-bezier(0.25, 0.8, 0.35, 1),
+              max-width 0.8s cubic-bezier(0.25, 0.8, 0.35, 1),
+              padding 0.8s cubic-bezier(0.25, 0.8, 0.35, 1);
+}
+
+.segment-middle {
+  border-radius: clamp(1.5px, 0.117vw, 3px);
+  padding: 0 clamp(18px, 1.406vw, 36px);
+  justify-content: center;
+  flex-shrink: 1;
+  width: auto;
+  max-width: 23.438vw;
+  opacity: 1;
+  transform: translateY(0);
+  overflow: visible;
+}
+
+/* 收缩状态 - 中间部分向下淡出并收缩宽度 */
+.navbar-container.collapsed .segment-middle {
+  opacity: 0;
+  transform: translateY(40px);
+  max-width: 0;
+  padding: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* 收缩状态下右侧保持可见 */
+.navbar-container.collapsed .segment-right {
+  opacity: 1;
+}
+
+.logo-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+}
+
+.logo-text {
+  font-size: clamp(13.5px, 1.055vw, 27px);
+  font-weight: 700;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: 0.15em;
+  transition: color 0.5s cubic-bezier(0.25, 0.8, 0.35, 1);
+}
+
+/* 浅色背景模式 - Logo 文字变深 */
+.glass-navbar.light-mode .logo-text {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.logo-wrap:hover .logo-text {
+  opacity: 0.8;
+}
+
+.navbar-menu {
+  display: flex;
+  list-style: none;
+  gap: clamp(21px, 1.64vw, 42px);
+  align-items: center;
+}
+
+.navbar-menu li a {
+  font-size: clamp(11px, 0.859vw, 22px);
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: color 0.25s ease;
+  position: relative;
+  display: inline-block;
+  padding: 0 clamp(3px, 0.234vw, 6px);
+  white-space: nowrap;
+  overflow: hidden;
+  height: 1.2em;
+  line-height: 1.2em;
+  text-align: center;
+}
+
+/* 浅色背景模式 - 菜单文字变深 */
+.glass-navbar.light-mode .navbar-menu li a {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.navbar-menu li a .menu-label {
+  display: block;
+  transition: transform 0.36s cubic-bezier(0.25, 0.8, 0.35, 1);
+  transform: translateY(0);
+}
+
+.navbar-menu li a:hover {
+  color: #ffffff;
+}
+
+/* 浅色背景模式 - hover 颜色 */
+.glass-navbar.light-mode .navbar-menu li a:hover {
+  color: #000000;
+}
+
+.navbar-menu li a:hover .menu-label {
+  transform: translateY(-100%);
+}
+
+.navbar-menu li a::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  display: block;
+  color: rgba(255, 255, 255, 0.9);
+  transition: transform 0.36s cubic-bezier(0.25, 0.8, 0.35, 1);
+  height: 1.2em;
+  line-height: 1.2em;
+  transform: translateY(100%);
+  text-align: center;
+}
+
+/* 浅色背景模式 - 伪元素文字变深 */
+.glass-navbar.light-mode .navbar-menu li a::after {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.navbar-menu li a:hover::after {
+  transform: translateY(0);
+}
+
+.navbar-menu li:hover ~ li a {
+  transform: none;
+}
+
+.navbar-menu li a:hover,
+.navbar-menu li:hover ~ li a {
+  color: #ffffff;
+}
+
+.glass-navbar.light-mode .navbar-menu li a:hover,
+.glass-navbar.light-mode .navbar-menu li:hover ~ li a {
+  color: #000000;
+}
+
+/* ====== 右侧三个点 - 默认状态 ====== */
+.navbar-dots-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.nav-dot {
+  fill: rgba(255, 255, 255, 0.9);
+  transition: fill 0.5s cubic-bezier(0.25, 0.8, 0.35, 1);
+}
+
+.glass-navbar.light-mode .nav-dot {
+  fill: rgba(0, 0, 0, 0.8);
+}
+
+/* ====== 等待状态 - 三个点拉开间距跳动 ====== */
+.navbar-dots-waiting {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  height: 100%;
+  padding: 0 10px;
+}
+
+/* ====== 固定位置展开面板 ====== */
+/* 360/2560=14.063vw, 520/2560=20.313vw */
+.island-panel {
+  position: fixed;
+  right: clamp(12px, 0.9375vw, 24px);
+  top: clamp(12px, 0.9375vw, 24px);
+  width: 14.063vw;
+  height: 20.313vw;
+  border-radius: clamp(8px, 0.625vw, 16px);
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 clamp(9px, 0.703vw, 18px) clamp(20px, 1.5625vw, 40px) rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+  z-index: 2000;
+}
+
+/* ====== 消息预览条样式 ====== */
+.segment-preview {
+  padding: 0 16px !important;
+  min-width: auto !important;
+  overflow: hidden;
+}
+
+.preview-content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.preview-text {
+  font-size: clamp(6.5px, 0.508vw, 13px);
+  color: rgba(255, 255, 255, 0.8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.glass-navbar.light-mode .preview-text {
+  color: rgba(0, 0, 0, 0.75);
+}
+
+/* ====== 新消息通知条 ====== */
+.notification-bar {
+  position: fixed;
+  right: clamp(12px, 0.9375vw, 24px);
+  top: clamp(12px, 0.9375vw, 24px);
+  height: 3.047vw;
+  border-radius: clamp(1.5px, 0.117vw, 3px);
+  display: flex;
+  align-items: center;
+  padding: 0 clamp(8px, 0.625vw, 16px) 0 clamp(6px, 0.469vw, 12px);
+  gap: clamp(6px, 0.469vw, 12px);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 clamp(9px, 0.703vw, 18px) clamp(20px, 1.5625vw, 40px) rgba(0, 0, 0, 0.22);
+  z-index: 1500;
+  cursor: pointer;
+  overflow: hidden;
+  transition: width 0.8s cubic-bezier(0.25, 0.8, 0.35, 1),
+              opacity 0.8s cubic-bezier(0.25, 0.8, 0.35, 1);
+}
+
+.notification-bar.light-mode {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+/* 呼吸小圆点 */
+.notification-breathing-dot {
+  width: clamp(5px, 0.391vw, 10px);
+  height: clamp(5px, 0.391vw, 10px);
+  border-radius: 50%;
+  background: #ff4d4d;
+  flex-shrink: 0;
+  animation: breathingDot 1.5s ease-in-out infinite;
+}
+
+@keyframes breathingDot {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(0.8);
+    box-shadow: 0 0 4px rgba(255, 77, 77, 0.4);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+    box-shadow: 0 0 12px rgba(255, 77, 77, 0.8);
+  }
+}
+
+.notification-content {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2px, 0.156vw, 4px);
+  overflow: hidden;
+  flex: 1;
+}
+
+.notification-label {
+  font-size: clamp(5.5px, 0.43vw, 11px);
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.notification-bar.light-mode .notification-label {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.notification-text {
+  font-size: clamp(6.5px, 0.508vw, 13px);
+  color: rgba(255, 255, 255, 0.9);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.notification-bar.light-mode .notification-text {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.island-panel.light-mode {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+}
+
+/* 面板内容容器 */
+.island-panel-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 关闭按钮 */
+.island-panel-close {
+  position: absolute;
+  top: clamp(8px, 0.625vw, 16px);
+  left: clamp(8px, 0.625vw, 16px);
+  width: clamp(16px, 1.25vw, 32px);
+  height: clamp(16px, 1.25vw, 32px);
+  border-radius: clamp(4px, 0.313vw, 8px);
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0;
+  z-index: 10;
+}
+
+.island-panel-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.95);
+  transform: scale(1.05);
+}
+
+.island-panel.light-mode .island-panel-close {
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.island-panel.light-mode .island-panel-close:hover {
+  background: rgba(0, 0, 0, 0.12);
+  color: rgba(0, 0, 0, 0.9);
+}
+
+/* 面板消息区域 */
+.island-panel-messages {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(28px, 2.188vw, 56px) clamp(10px, 0.781vw, 20px) clamp(8px, 0.625vw, 16px) clamp(10px, 0.781vw, 20px);
+  overflow: hidden;
+  min-height: 0;
+}
+
+.island-panel-messages-list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 0.469vw, 12px);
+  overflow-y: auto;
+  padding: clamp(2px, 0.156vw, 4px);
+  flex: 1;
+}
+
+.island-panel-messages-list::-webkit-scrollbar {
+  width: clamp(2px, 0.156vw, 4px);
+}
+
+.island-panel-messages-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.island-panel-messages-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+}
+
+.island-panel.light-mode .island-panel-messages-list::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+/* 单条消息 */
+.island-panel-message {
+  display: flex;
+  padding: clamp(6px, 0.469vw, 12px) clamp(8px, 0.625vw, 16px);
+  border-radius: clamp(6px, 0.469vw, 12px);
+  max-width: 85%;
+}
+
+/* 用户消息 - 浅灰背景 */
+.island-panel-message.user {
+  align-self: flex-end;
+  background: rgba(200, 200, 200, 0.25);
+  margin-left: auto;
+}
+
+.island-panel.light-mode .island-panel-message.user {
+  background: rgba(180, 180, 180, 0.35);
+}
+
+/* AI消息 - 深灰背景 */
+.island-panel-message.ai {
+  align-self: flex-start;
+  background: rgba(80, 80, 80, 0.4);
+  margin-right: auto;
+}
+
+.island-panel.light-mode .island-panel-message.ai {
+  background: rgba(60, 60, 60, 0.2);
+}
+
+.island-panel-message-text {
+  font-size: clamp(6.5px, 0.508vw, 13px);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+  word-break: break-word;
+}
+
+.island-panel.light-mode .island-panel-message-text {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+/* 打字指示器 */
+.island-panel .typing-indicator {
+  display: flex;
+  gap: clamp(2px, 0.156vw, 4px);
+  align-items: center;
+}
+
+.island-panel .typing-indicator span {
+  width: clamp(3px, 0.234vw, 6px);
+  height: clamp(3px, 0.234vw, 6px);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  animation: typingPulse 1.2s infinite ease-in-out;
+}
+
+.island-panel.light-mode .typing-indicator span {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.island-panel .typing-indicator span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.island-panel .typing-indicator span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes typingPulse {
+  0%, 60%, 100% {
+    opacity: 0.3;
+    transform: scale(0.85);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 底部输入区域 */
+.island-panel-input-area {
+  display: flex;
+  align-items: center;
+  gap: clamp(5px, 0.391vw, 10px);
+  padding: clamp(8px, 0.625vw, 16px) clamp(10px, 0.781vw, 20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.island-panel.light-mode .island-panel-input-area {
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.island-panel-input {
+  flex: 1;
+  height: clamp(20px, 1.563vw, 40px);
+  padding: 0 clamp(7px, 0.547vw, 14px);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: clamp(5px, 0.391vw, 10px);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: clamp(7px, 0.547vw, 14px);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.island-panel-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.island-panel-input:focus {
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.island-panel.light-mode .island-panel-input {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.island-panel.light-mode .island-panel-input::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.island-panel.light-mode .island-panel-input:focus {
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.island-panel-send {
+  width: clamp(20px, 1.563vw, 40px);
+  height: clamp(20px, 1.563vw, 40px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  border-radius: clamp(5px, 0.391vw, 10px);
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.island-panel-send:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 1);
+  transform: scale(1.05);
+}
+
+.island-panel-send:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.island-panel.light-mode .island-panel-send {
+  background: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.island-panel.light-mode .island-panel-send:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.15);
+  color: rgba(0, 0, 0, 0.9);
+}
+
+/* ====== 移动端适配 - 768px 断点 ====== */
+@media (max-width: 768px) {
+  .glass-navbar {
+    top: auto;
+    bottom: 0;
+    padding: 12px 16px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .glass-navbar.collapsed {
+    top: auto;
+    bottom: 24px;
+  }
+
+  .navbar-shell {
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+  }
+
+  .navbar-container {
+    height: 56px;
+    gap: 8px;
+  }
+
+  .navbar-container.collapsed {
+    gap: 6px;
+  }
+
+  .nav-segment {
+    height: 56px;
+    border-radius: 16px;
+  }
+
+  .segment-left {
+    padding: 0 20px;
+    border-radius: 16px;
+  }
+
+  .segment-right {
+    padding: 0 16px;
+    min-width: 56px;
+    min-height: 56px;
+    border-radius: 16px;
+  }
+
+  .segment-middle {
+    border-radius: 16px;
+    padding: 0 24px;
+    max-width: none;
+  }
+
+  .navbar-container.collapsed .segment-middle {
+    opacity: 0;
+    transform: translateY(20px);
+    max-width: 0;
+    padding: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .logo-text {
+    font-size: 18px;
+    letter-spacing: 0.12em;
+  }
+
+  .navbar-menu {
+    gap: 24px;
+  }
+
+  .navbar-menu li a {
+    font-size: 14px;
+    padding: 0 8px;
+  }
+
+  /* 灵动岛面板 - 移动端全屏显示 */
+  .island-panel {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
+    border-radius: 0;
+  }
+
+  /* 消息预览条 */
+  .segment-preview {
+    padding: 0 12px !important;
+  }
+
+  .preview-text {
+    font-size: 12px;
+  }
+
+  /* 新消息通知条 */
+  .notification-bar {
+    right: 16px;
+    top: auto;
+    bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+    height: 48px;
+    border-radius: 12px;
+    padding: 0 12px 0 10px;
+    gap: 8px;
+  }
+
+  .notification-breathing-dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  .notification-label {
+    font-size: 10px;
+  }
+
+  .notification-text {
+    font-size: 13px;
+  }
+
+  /* 关闭按钮 */
+  .island-panel-close {
+    top: 16px;
+    left: 16px;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+  }
+
+  /* 面板消息区域 */
+  .island-panel-messages {
+    padding: 64px 16px 16px 16px;
+  }
+
+  .island-panel-messages-list {
+    gap: 12px;
+    padding: 4px;
+  }
+
+  .island-panel-messages-list::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  /* 单条消息 */
+  .island-panel-message {
+    padding: 12px 16px;
+    border-radius: 16px;
+    max-width: 90%;
+  }
+
+  .island-panel-message-text {
+    font-size: 15px;
+  }
+
+  /* 打字指示器 */
+  .island-panel .typing-indicator {
+    gap: 4px;
+  }
+
+  .island-panel .typing-indicator span {
+    width: 8px;
+    height: 8px;
+  }
+
+  /* 底部输入区域 */
+  .island-panel-input-area {
+    gap: 10px;
+    padding: 16px;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .island-panel-input {
+    height: 48px;
+    padding: 0 14px;
+    border-radius: 12px;
+    font-size: 16px;
+  }
+
+  .island-panel-send {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+  }
+}

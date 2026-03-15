@@ -1,0 +1,662 @@
+.video-works-page {
+  width: 100%;
+  min-height: 100vh;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5%;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.works-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  transform-origin: center center;
+  will-change: transform, filter;
+}
+
+.works-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  /* 固定高度避免容器随卡片变化导致页面抖动 */
+  height: 68vh;
+  /* 不设置固定宽度，让内容自然撑开然后居中 */
+}
+
+/* ===== 工作卡片 ===== */
+.work-card {
+  border-radius: 0;
+  overflow: hidden;
+  cursor: pointer;
+  flex-shrink: 0;
+  /* 初始尺寸 */
+  width: 28.125vw;
+  height: 62vh;
+  /* 从顶部向下扩展 */
+  transform-origin: top center;
+  align-self: flex-start;
+  /* 启用容器查询，让内部元素可以基于卡片大小缩放 */
+  container-type: inline-size;
+}
+
+/* ===== 文字卡片 ===== */
+.work-text-content {
+  width: 100%;
+  height: 100%;
+  background: #0a0a0a;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 8cqw;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: visible;
+  position: relative;
+}
+
+.work-text-header {
+  display: flex;
+  flex-direction: column;
+  gap: 3cqw;
+  flex-shrink: 0;
+  margin-bottom: 5cqw;
+}
+
+.work-title {
+  font-size: 10cqw !important;
+  font-weight: 900 !important;
+  color: #ffffff !important;
+  font-family: 'SimHei', 'Heiti SC', 'Microsoft YaHei', sans-serif;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.work-title-en {
+  font-size: 3.5cqw;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.55);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.work-description {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.45);
+  font-family: 'SimHei', 'Heiti SC', 'Microsoft YaHei', sans-serif;
+  line-height: 1.9;
+  letter-spacing: 0.02em;
+  white-space: pre-line;
+  margin-top: 20px;
+  max-width: 90%;
+}
+
+/* ===== 图片卡片 - 蒙版效果 ===== */
+.work-image-content {
+  width: 100%;
+  height: 100%;
+  background: #1a1a1a;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 图片固定为最大尺寸，卡片变化时显示更多/更少内容 */
+/* 这样实现了蒙版效果：卡片变大能看到更多图片 */
+.work-image {
+  width: 34vw;
+  height: 68vh;
+  object-fit: cover;
+  object-position: center center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+  max-width: none;
+  max-height: none;
+}
+
+/* ===== 左上角标签 - 毛玻璃效果 ===== */
+.work-tags {
+  position: absolute;
+  top: 1.2vw;
+  left: 1.2vw;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6vw;
+  z-index: 10;
+}
+
+.work-tag {
+  /* 横向排列文字 */
+  writing-mode: horizontal-tb;
+  padding: 0.5vw 0.8vw;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 3px;
+  color: #ffffff;
+  font-size: clamp(10px, 0.75vw, 14px);
+  font-weight: 500;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  /* 斜体文字 */
+  font-style: italic;
+}
+
+/* 项目个人参与度标签容器 */
+.work-tag-participation {
+  position: relative;
+  display: inline-block;
+  padding: 0.5vw 0.8vw;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: clamp(10px, 0.75vw, 14px);
+  font-weight: 500;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  background: transparent;
+}
+
+/* SVG mask 隐藏但保持定义 */
+.work-tag-svg-mask {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* 填充背景层 - 应用SVG mask镂空文字区域 */
+.work-tag-participation-bg {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(255, 255, 255, 0.95) var(--fill-percent),
+    rgba(255, 255, 255, 0.1) var(--fill-percent),
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  border-radius: 3px;
+  z-index: 0;
+  mask-size: 100% 100%;
+  -webkit-mask-size: 100% 100%;
+}
+
+/* 文字轮廓层 - 只显示细描边 */
+.work-tag-participation-outline {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+  color: transparent;
+  -webkit-text-stroke: 0.8px rgba(255, 255, 255, 0.6);
+  text-stroke: 0.8px rgba(255, 255, 255, 0.6);
+  paint-order: stroke fill;
+}
+
+/* ===== 视频模态框 ===== */
+.video-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000000;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-modal-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* 关闭按钮 - 毛玻璃效果，与菜单栏一致 */
+.video-close-btn {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  height: 56px;
+  padding: 0 28px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 3px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  cursor: pointer;
+  z-index: 1001;
+  transition: all 0.3s ease;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-close-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+/* 视频容器 */
+.video-wrapper {
+  width: 92%;
+  max-width: 1800px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 视频播放器 */
+.video-player {
+  width: 100%;
+  max-height: 92vh;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* 视频控制器样式重置 */
+.video-player::-webkit-media-controls-panel {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+}
+
+.video-player::-webkit-media-controls-play-button,
+.video-player::-webkit-media-controls-mute-button,
+.video-player::-webkit-media-controls-fullscreen-button {
+  filter: invert(1);
+}
+
+/* ===== 服务品牌区域 ===== */
+.brands-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 5% 0;
+  margin-top: 200px;
+  margin-bottom: 120px;
+}
+
+.brands-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.brands-label {
+  font-size: 18px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'SimHei', 'Heiti SC', 'Microsoft YaHei', sans-serif;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.brands-logos {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
+.brand-logo {
+  object-fit: contain;
+  opacity: 0.8;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  filter: brightness(0) invert(1);
+}
+
+.brand-logo:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* 网易 - 方形logo */
+.brand-logo-wangyi {
+  height: 35px;
+  width: auto;
+}
+
+/* 小米 - 圆角方形 */
+.brand-logo-xiaomi {
+  height: 42px;
+  width: auto;
+}
+
+/* 中国联通 - 细长型 */
+.brand-logo-unicom {
+  height: 55px;
+  width: auto;
+}
+
+/* 探路者 - 横向较宽 */
+.brand-logo-tanlu {
+  height: 56px;
+  width: auto;
+}
+
+/* 万 - 圆形 */
+.brand-logo-wan {
+  height: 48px;
+  width: auto;
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 1200px) {
+  .work-card {
+    height: 55vh;
+  }
+
+  .work-image {
+    height: 60.5vh;
+  }
+
+  .works-row {
+    height: 60.5vh;
+  }
+}
+
+@media (max-width: 900px) {
+  .works-row {
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    height: auto;
+  }
+
+  .work-card {
+    width: calc(50% - 10px) !important;
+    height: auto !important;
+    aspect-ratio: 720 / 895;
+    margin-right: 0 !important;
+  }
+
+  .work-card:nth-child(1) {
+    width: 100% !important;
+  }
+
+  .work-image {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
+    object-fit: cover;
+  }
+}
+
+@media (max-width: 600px) {
+  .video-works-page {
+    padding: 30px 5%;
+  }
+
+  .works-row {
+    gap: 10px;
+  }
+
+  .work-card {
+    width: 100% !important;
+    aspect-ratio: 720 / 895;
+  }
+
+  .work-text-content {
+    padding: 6vw;
+  }
+
+  .work-title {
+    font-size: 7vw;
+  }
+
+  .work-title-en {
+    font-size: 3.5vw;
+  }
+
+  .work-description {
+    font-size: 3vw;
+    top: calc(6vw + 20vw);
+  }
+}
+
+/* ===== 视频网格区域 ===== */
+.video-grid-section {
+  width: 100%;
+  padding: 80px 10%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .video-grid-section {
+    padding: 100px 10%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .video-grid-section {
+    padding: 120px 10%;
+  }
+}
+
+.video-grid-container {
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.video-grid-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 50px 32px;
+}
+
+@media (min-width: 768px) {
+  .video-grid-layout {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 70px 32px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .video-grid-layout {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 90px 32px;
+  }
+}
+
+/* 视频卡片基础样式 */
+.video-grid-card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  cursor: pointer;
+}
+
+/* 小卡片 - 默认单列 */
+.video-grid-item-small {
+  grid-column: span 1;
+}
+
+/* 中等卡片 - 2/3宽 */
+@media (min-width: 768px) {
+  .video-grid-item-medium {
+    grid-column: span 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .video-grid-item-medium {
+    grid-column: span 2;
+  }
+}
+
+/* 大卡片 - 全宽 */
+.video-grid-item-large {
+  grid-column: 1 / -1;
+}
+
+/* 视频容器 - 16:9比例 */
+.video-grid-card-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #1a1a1a;
+  overflow: hidden;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.video-grid-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #1a1a1a;
+}
+
+/* 播放图标覆盖层 */
+.video-grid-play-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.video-grid-play-overlay.visible {
+  opacity: 1;
+}
+
+.video-grid-play-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: scale(0.9);
+  transition: transform 0.5s ease;
+}
+
+.video-grid-card:hover .video-grid-play-btn {
+  transform: scale(1);
+}
+
+.video-grid-play-btn svg {
+  width: 24px;
+  height: 24px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-left: 3px;
+}
+
+/* 元数据区域 */
+.video-grid-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 12px;
+}
+
+.video-grid-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.video-grid-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  transition: color 0.3s ease;
+  line-height: 1.3;
+}
+
+@media (min-width: 768px) {
+  .video-grid-card-title {
+    font-size: 1.5rem;
+  }
+}
+
+.video-grid-card:hover .video-grid-card-title {
+  color: #d4d4d4;
+}
+
+.video-grid-card-info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.video-grid-card-client {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+}
+
+.video-grid-card-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  flex-shrink: 0;
+}
+
+/* 响应式调整 */
+@media (max-width: 767px) {
+  .video-grid-section {
+    padding: 60px 5%;
+  }
+
+  .video-grid-layout {
+    gap: 40px 0;
+  }
+
+  .video-grid-card-meta {
+    gap: 8px;
+  }
+
+  .video-grid-card-title {
+    font-size: 1.125rem;
+  }
+
+  .video-grid-card-info {
+    font-size: 0.75rem;
+  }
+}

@@ -1,0 +1,460 @@
+/* ===== 字体引入 ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Noto+Serif+SC:wght@200;300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap');
+
+/* ===== 个人信息页面容器 ===== */
+.personal-info-page {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  background: transparent;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #1a1a1a;
+}
+
+/* ===== 背景效果 ===== */
+.personal-bg-effects {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.personal-bg-glow {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.personal-bg-glow-1 {
+  top: 10%;
+  left: 10%;
+  width: 30%;
+  height: 40%;
+  background: rgba(168, 162, 158, 0.1);
+  filter: blur(150px);
+}
+
+.personal-bg-glow-2 {
+  bottom: 10%;
+  right: 10%;
+  width: 40%;
+  height: 50%;
+  background: rgba(120, 53, 15, 0.05);
+  filter: blur(180px);
+}
+
+.personal-bg-noise {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  mix-blend-mode: multiply;
+}
+
+/* ===== 主内容容器 ===== */
+/* 以2560px为基准计算比例 */
+.personal-content-wrapper {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 2560px;
+  margin: 0 auto;
+  padding: 0 15vw;
+}
+
+/* ===== 头部简介 ===== */
+/* 128/2560=5vw, 192/2560=7.5vw */
+.personal-header {
+  padding-top: 5vw;
+  padding-bottom: 7.5vw;
+}
+
+/* 姓名 10rem=160px, 160/2560=6.25vw */
+.personal-name {
+  font-family: 'Playfair Display', 'Noto Serif SC', Georgia, serif;
+  font-size: 6.25vw;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: clamp(24px, 1.875vw, 48px);
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.personal-name-dot {
+  color: rgba(0, 0, 0, 0.2);
+}
+
+/* 个人介绍 2.25rem=36px, 36/2560=1.406vw */
+.personal-intro {
+  font-size: 1.406vw;
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.6);
+  max-width: 56rem;
+  line-height: 1.6;
+  margin-bottom: clamp(40px, 3.125vw, 80px);
+}
+
+.personal-highlight {
+  font-family: 'Playfair Display', 'Noto Serif SC', Georgia, serif;
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+/* 联系方式网格 */
+.personal-contact-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(24px, 1.875vw, 48px) 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding-top: clamp(24px, 1.875vw, 48px);
+}
+
+.personal-contact-item {
+  cursor: default;
+}
+
+.personal-contact-label {
+  font-size: clamp(10px, 0.782vw, 20px);
+  color: rgba(0, 0, 0, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: clamp(6px, 0.469vw, 12px);
+  transition: color 0.3s ease;
+}
+
+.personal-contact-item:hover .personal-contact-label {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.personal-contact-value {
+  font-size: clamp(1.126rem, 0.976vw, 2.5rem);
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+/* ===== Section 通用样式 ===== */
+/* 96/2560=3.75vw */
+.personal-section {
+  padding: 3.75vw 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: clamp(48px, 3.75vw, 96px);
+}
+
+.personal-section-header {
+  margin-bottom: 0;
+  grid-column: span 3;
+  position: sticky;
+  top: 3.75vw;
+  align-self: start;
+}
+
+.personal-section-number {
+  font-size: clamp(11px, 0.821vw, 21px);
+  color: rgba(0, 0, 0, 0.3);
+  font-family: 'Inter', monospace;
+  letter-spacing: 0.1em;
+  margin-right: clamp(8px, 0.625vw, 16px);
+}
+
+.personal-section-title {
+  font-size: clamp(9px, 0.704vw, 18px);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.personal-section-content {
+  flex: 1;
+  grid-column: span 9;
+}
+
+/* ===== 技能区域 ===== */
+.personal-skill-group {
+  margin-bottom: clamp(40px, 3.125vw, 80px);
+}
+
+.personal-skill-group:last-child {
+  margin-bottom: 0;
+}
+
+.personal-skill-title {
+  font-family: 'Playfair Display', 'Noto Serif SC', Georgia, serif;
+  font-size: clamp(2.25rem, 1.758vw, 4.5rem);
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.9);
+  margin-bottom: clamp(16px, 1.25vw, 32px);
+}
+
+.personal-skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(8px, 0.625vw, 16px);
+}
+
+.personal-skill-tag {
+  display: inline-block;
+  padding: clamp(9px, 0.704vw, 18px) clamp(18px, 1.407vw, 36px);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  font-size: clamp(11px, 0.821vw, 21px);
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.6);
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+/* ===== 工作经历区域 ===== */
+.personal-section-experience {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  margin-bottom: clamp(64px, 5vw, 128px);
+}
+
+.personal-work-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.personal-work-item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding-bottom: clamp(32px, 2.5vw, 64px);
+  margin-bottom: clamp(32px, 2.5vw, 64px);
+}
+
+.personal-work-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.personal-work-header {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: clamp(16px, 1.25vw, 32px);
+  gap: clamp(8px, 0.625vw, 16px);
+}
+
+.personal-work-company {
+  font-family: 'Playfair Display', 'Noto Serif SC', Georgia, serif;
+  font-size: clamp(2.25rem, 1.758vw, 4.5rem);
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 0.625vw, 16px);
+  transition: color 0.3s ease;
+}
+
+.personal-work-item:hover .personal-work-company {
+  color: rgba(0, 0, 0, 1);
+}
+
+.personal-work-arrow {
+  width: clamp(12px, 0.938vw, 24px);
+  height: clamp(12px, 0.938vw, 24px);
+  opacity: 0;
+  transform: translate(-8px, -8px);
+  transition: all 0.5s ease;
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.personal-work-item:hover .personal-work-arrow {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+.personal-work-period {
+  font-size: clamp(12px, 0.957vw, 25px);
+  color: rgba(0, 0, 0, 0.4);
+  font-family: 'Inter', monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.personal-work-role {
+  font-size: clamp(1.09rem, 1.026vw, 2.63rem);
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  margin-bottom: clamp(20px, 1.563vw, 40px);
+}
+
+.personal-work-tasks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-width: 56rem;
+}
+
+.personal-work-task {
+  color: rgba(0, 0, 0, 0.6);
+  line-height: 1.8;
+  display: flex;
+  gap: clamp(12px, 0.938vw, 24px);
+  font-weight: 300;
+  font-size: clamp(0.875rem, 0.768vw, 1.97rem);
+  margin-bottom: clamp(12px, 0.938vw, 24px);
+  transition: color 0.5s ease;
+}
+
+.personal-work-item:hover .personal-work-task {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.personal-work-task-dash {
+  color: rgba(0, 0, 0, 0.2);
+  margin-top: clamp(3px, 0.234vw, 6px);
+}
+
+/* ===== 移动端适配 - 768px 断点 ===== */
+@media (max-width: 768px) {
+  .personal-info-page {
+    min-height: auto;
+    padding-bottom: 100px;
+  }
+
+  .personal-content-wrapper {
+    padding: 0 24px;
+  }
+
+  /* 头部简介 */
+  .personal-header {
+    padding-top: 80px;
+    padding-bottom: 60px;
+  }
+
+  /* 姓名 */
+  .personal-name {
+    font-size: 48px;
+    margin-bottom: 24px;
+  }
+
+  /* 个人介绍 */
+  .personal-intro {
+    font-size: 18px;
+    line-height: 1.7;
+    margin-bottom: 40px;
+  }
+
+  /* 联系方式网格 - 改为 2 列 */
+  .personal-contact-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px 16px;
+    padding-top: 24px;
+  }
+
+  .personal-contact-label {
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+
+  .personal-contact-value {
+    font-size: 15px;
+  }
+
+  /* Section 通用样式 - 左侧标题改顶部 */
+  .personal-section {
+    padding: 40px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .personal-section-header {
+    position: static;
+    margin-bottom: 16px;
+  }
+
+  .personal-section-number {
+    font-size: 12px;
+  }
+
+  .personal-section-title {
+    font-size: 11px;
+  }
+
+  .personal-section-content {
+    width: 100%;
+  }
+
+  /* 技能区域 */
+  .personal-skill-group {
+    margin-bottom: 32px;
+  }
+
+  .personal-skill-title {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+
+  .personal-skill-tags {
+    gap: 10px;
+  }
+
+  .personal-skill-tag {
+    padding: 10px 16px;
+    font-size: 13px;
+    border-radius: 6px;
+  }
+
+  /* 工作经历区域 */
+  .personal-section-experience {
+    margin-bottom: 48px;
+  }
+
+  .personal-work-item {
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+  }
+
+  .personal-work-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .personal-work-company {
+    font-size: 22px;
+    gap: 8px;
+  }
+
+  .personal-work-arrow {
+    width: 16px;
+    height: 16px;
+  }
+
+  .personal-work-period {
+    font-size: 12px;
+  }
+
+  .personal-work-role {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+
+  .personal-work-tasks {
+    max-width: 100%;
+  }
+
+  .personal-work-task {
+    gap: 12px;
+    font-size: 14px;
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+
+  .personal-work-task-dash {
+    margin-top: 4px;
+  }
+}
