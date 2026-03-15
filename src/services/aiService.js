@@ -1,6 +1,9 @@
 import { scrollToSection, highlightElement } from '../utils/aiController'
 
-const DIFY_API_URL = '/api/dify/chat-messages'
+// 开发环境用代理，生产环境直连 Dify API
+const DIFY_API_URL = import.meta.env.PROD
+  ? 'https://api.dify.ai/v1/chat-messages'
+  : '/api/dify/chat-messages'
 const DIFY_API_KEY = import.meta.env.VITE_DIFY_API_KEY
 
 // 存储会话 ID（Dify 需要用来保持上下文）
