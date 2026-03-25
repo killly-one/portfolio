@@ -9,7 +9,8 @@ const videoProjects = [
     title: "联通吧！多元宇宙",
     client: "China Unicom 中国联通",
     role: "画面设计 / 分镜设计 / 后期粗剪 / 需求对接",
-    videoSrc: "https://killy-video.oss-cn-hangzhou.aliyuncs.com/%E8%81%94%E9%80%9A%E9%A1%B9%E7%9B%AE.mp4",
+    videoSrc: "/Viedo/联通项目.mp4",
+    poster: "/images/posters/联通项目.jpg",
     isLarge: true,
   },
   {
@@ -17,7 +18,8 @@ const videoProjects = [
     title: "阿里云通义万象 WanDay",
     client: "Alibaba Cloud 阿里云",
     role: "需求对接 / 画面设计 / 分镜设计",
-    videoSrc: "https://killy-video.oss-cn-hangzhou.aliyuncs.com/Wan%20Day.mov",
+    videoSrc: "/Viedo/Wan Day.mov",
+    poster: "/images/work/Wan Day.png",
     isMedium: true,
   },
   {
@@ -25,35 +27,40 @@ const videoProjects = [
     title: "8H双11广告",
     client: "8H 趣睡科技",
     role: "画面设计 / 分镜设计 / 后期 / 需求对接",
-    videoSrc: "https://killy-video.oss-cn-hangzhou.aliyuncs.com/250929-%E8%B6%A3%E7%9D%A1%E7%A7%91%E6%8A%808H%E6%88%90%E7%89%87-v2.mp4",
+    videoSrc: "/Viedo/250929-趣睡科技8H成片-v2.mp4",
+    poster: "/images/posters/8H.jpg",
   },
   {
     id: 4,
     title: "拉斐尔之酒",
     client: "Raphael Wine",
     role: "画面设计 / 后期",
-    videoSrc: "https://killy-video.oss-cn-hangzhou.aliyuncs.com/%E6%8B%89%E6%96%90%E5%B0%94%E4%B9%8B%E9%85%92.mp4",
+    videoSrc: "/Viedo/拉斐尔之酒.mp4",
+    poster: "/images/posters/拉斐尔之酒.jpg",
   },
   {
     id: 5,
     title: "七匹狼广告",
     client: "Septwolves 七匹狼",
     role: "画面设计 / 分镜设计 / 后期 / 需求对接",
-    videoSrc: "https://killy-video.oss-cn-hangzhou.aliyuncs.com/%E4%B8%83%E5%8C%B9%E7%8B%BC.mp4",
+    videoSrc: "/Viedo/七匹狼.mp4",
+    poster: "/images/posters/七匹狼.jpg",
   },
   {
     id: 6,
     title: "探路者广告",
     client: "TOREAD 探路者",
     role: "画面设计",
-    videoSrc: "https://killy-video.oss-cn-hangzhou.aliyuncs.com/%E6%8E%A2%E8%B7%AF%E8%80%85_%E6%9E%81%E5%9C%B0%E7%B3%BB%E5%88%97%E7%BA%BF%E4%B8%8A%E6%AC%BE.mp4",
+    videoSrc: "/Viedo/探路者_极地系列线上款.mp4",
+    poster: "/images/work/探路者.png",
   },
   {
     id: 7,
     title: "太平年",
     client: "华策集团",
     role: "画面设计",
-    videoSrc: "https://killy-video.oss-cn-hangzhou.aliyuncs.com/%E5%A4%AA%E5%B9%B3%E5%B9%B4.mp4",
+    videoSrc: "/Viedo/太平年.mp4",
+    poster: "/images/posters/太平年.jpg",
     isLarge: true,
   }
 ]
@@ -71,7 +78,8 @@ const workProjects = [
     type: 'image',
     title: '幻想地球',
     imageSrc: '/images/work/幻想地球.png',
-    videoSrc: 'https://killy-video.oss-cn-hangzhou.aliyuncs.com/%E5%B9%BB%E6%83%B3%E5%9C%B0%E7%90%83%EF%BC%88%E6%97%A0%E6%B0%B4%E5%8D%B0%EF%BC%89.m4v',
+    videoSrc: '/Viedo/幻想地球（无水印）.m4v',
+    poster: '/images/work/幻想地球.png',
     tags: ['动画设计', '分镜设计', 'AI制作PV'],
   },
   {
@@ -79,7 +87,8 @@ const workProjects = [
     type: 'image',
     title: '探路者',
     imageSrc: '/images/work/探路者.png',
-    videoSrc: 'https://killy-video.oss-cn-hangzhou.aliyuncs.com/%E6%8E%A2%E8%B7%AF%E8%80%85_%E6%9E%81%E5%9C%B0%E7%B3%BB%E5%88%97%E7%BA%BF%E4%B8%8A%E6%AC%BE.mp4',
+    videoSrc: '/Viedo/探路者_极地系列线上款.mp4',
+    poster: '/images/work/探路者.png',
     tags: ['分镜设计', 'AI制作广告'],
   },
   {
@@ -87,7 +96,8 @@ const workProjects = [
     type: 'image',
     title: '词印狂潮',
     imageSrc: '/images/work/词印狂潮.png',
-    videoSrc: 'https://killy-video.oss-cn-hangzhou.aliyuncs.com/%E8%AF%8D%E5%8D%B0%E7%8B%82%E6%BD%AE.mov',
+    videoSrc: '/Viedo/词印狂潮.mov',
+    poster: '/images/work/词印狂潮.png',
     tags: ['动画设计', '风格设计', '人物设计', '场景设计', 'AI制作动画'],
   },
 ]
@@ -137,11 +147,12 @@ function VideoGridCard({ project, index, className, onClick }) {
         <video
           ref={videoRef}
           src={project.videoSrc}
+          poster={project.poster}
           className="video-grid-video"
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="none"
         />
 
         {/* 播放图标覆盖层 */}
